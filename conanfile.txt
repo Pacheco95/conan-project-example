@@ -1,5 +1,6 @@
 [requires]
 physx/4.1.1
+plog/1.1.5
 
 [generators]
 cmake

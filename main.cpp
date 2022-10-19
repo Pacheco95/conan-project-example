@@ -4,6 +4,10 @@
 #include <PxPhysicsAPI.h>
 #include <iostream>
 
+#include <plog/Log.h>
+#include <plog/Appenders/ColorConsoleAppender.h>
+
+
 #define PX_RELEASE(x) if(x) { x->release(); x = NULL; }
 
 using namespace physx;
@@ -25,6 +29,12 @@ PxMaterial *gMaterial = nullptr;
 PxPvd *gPvd = nullptr;
 
 PxReal stackZ = 10.0f;
+
+void configureLogger() {
+    static plog::ColorConsoleAppender<plog::TxtFormatter> appender;
+    plog::init(plog::debug, &appender);
+}
+
 
 PxRigidDynamic *createDynamic(const PxTransform &t, const PxGeometry &geometry, const PxVec3 &velocity = PxVec3(0)) {
     PxRigidDynamic *dynamic = PxCreateDynamic(*gPhysics, t, geometry, *gMaterial, 10.0f);
@@ -99,32 +109,27 @@ void cleanupPhysics(bool /*interactive*/) {
         PX_RELEASE(transport);
     }
     PX_RELEASE(gFoundation);
-
-    printf("SnippetHelloWorld done.\n");
 }
 
 
 int main() {
-    static const PxU32 frameCount = 100;
+    configureLogger();
 
-    cout << "Setting up world configuration..." << endl;
+    LOGD << "Setting up world configuration...";
 
+    const PxU32 frameCount = 100;
     initPhysics(false);
 
-    cout << "Simulation started" << endl;
+    LOGD << "Simulation started";
 
     for (PxU32 i = 0; i < frameCount; i++)
         stepPhysics(false);
 
-    cout << "Simulation finished" << endl;
+    LOGD << "Simulation finished";
 
     cleanupPhysics(false);
 
-    cout << "Resources cleaned" << endl;
-
-    cout << "Press <Enter> to exit" << endl;
-
-    cin.get();
+    LOGD << "Resources cleaned";
 
     return 0;
 }
