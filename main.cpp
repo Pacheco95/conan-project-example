@@ -2,7 +2,6 @@
 
 #include <PxConfig.h>
 #include <PxPhysicsAPI.h>
-#include <iostream>
 
 #include <plog/Log.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
@@ -113,11 +112,13 @@ void cleanupPhysics(bool /*interactive*/) {
 
 
 int main() {
+    LOGI << "You can download NVIDIA PVD at https://developer.nvidia.com/physx-visual-debugger to see the simulation";
+
     configureLogger();
 
     LOGD << "Setting up world configuration...";
 
-    const PxU32 frameCount = 100;
+    const PxU32 frameCount = 2500;
     initPhysics(false);
 
     LOGD << "Simulation started";
