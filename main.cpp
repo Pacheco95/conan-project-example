@@ -1,10 +1,13 @@
 #include <cctype>
 
-#include "PxPhysicsAPI.h"
+#include <PxConfig.h>
+#include <PxPhysicsAPI.h>
+#include <iostream>
 
 #define PX_RELEASE(x) if(x) { x->release(); x = NULL; }
 
 using namespace physx;
+using namespace std;
 
 constexpr auto PVD_HOST = "127.0.0.1";
 
@@ -104,12 +107,24 @@ void cleanupPhysics(bool /*interactive*/) {
 int main() {
     static const PxU32 frameCount = 100;
 
+    cout << "Setting up world configuration..." << endl;
+
     initPhysics(false);
+
+    cout << "Simulation started" << endl;
 
     for (PxU32 i = 0; i < frameCount; i++)
         stepPhysics(false);
 
+    cout << "Simulation finished" << endl;
+
     cleanupPhysics(false);
+
+    cout << "Resources cleaned" << endl;
+
+    cout << "Press <Enter> to exit" << endl;
+
+    cin.get();
 
     return 0;
 }
